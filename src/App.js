@@ -4,28 +4,32 @@ import  HomePage  from './pages/homepage/homepage.component.jsx';
 
 import { Route, Switch, Link } from 'react-router-dom';
 
-const HatsPage = (props) => (
-  <div>
-  {console.log(props)};
-    <button onClick={()=> props.history.push('/jackets')}>Jackets</button>
-      <h1>HATS PAGE:  {props.match.params.hatsID}</h1>
-    </div>
-)
-const JacketsPage = (props) => (
-    <div>
+import ShopPage from './pages/shop/shop.component.jsx';
+
+
+
+// const HatsPage = (props) => (
+//   <div>
+//   {console.log(props)};
+//     <button onClick={()=> props.history.push('/jackets')}>Jackets</button>
+//       <h1>HATS PAGE:  {props.match.params.hatsID}</h1>
+//     </div>
+// )
+// const JacketsPage = (props) => (
+//     <div>
     
-    <Link to="/hats/15">HATS</Link>
-      <h1>JACKETS PAGE</h1>
-    </div>
-)
+//     <Link to="/hats/15">HATS</Link>
+//       <h1>JACKETS PAGE</h1>
+//     </div>
+// )
 
 function App() {
   return (
     <div >
       <Switch>
           <Route exact path='/' component={HomePage} />   
-          <Route path='/jackets' component={JacketsPage} />
-          <Route path='/hats' component={HatsPage} />
+          
+          <Route path='/shop' component={ShopPage} />
       </Switch>
     </div>
   );
