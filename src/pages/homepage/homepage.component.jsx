@@ -4,7 +4,7 @@ import './homepage.style.scss';
 
 const HomePage = (props) => (
     <div className='homepage'>
-    {console.log(props)}
+    
         <Directory />
     </div>
 )

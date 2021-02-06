@@ -28,14 +28,14 @@ class Directory extends React.Component{
                 },
                 {
                     title: 'women',
-                    imageURL: 'https://i.ibb.co/GCCdy8t/womens.png',
+                    imageURL: 'https://www.travelfashiongirl.com/wp-content/uploads/2016/10/womens-winter-fashion.jpg',
                     id: 4,
                     size: 'large',
                     linkURL: ''
                 },
                 {
                     title: 'Mens',
-                    imageURL: 'https://i.ibb.co/R70vBrQ/men.png',
+                    imageURL: 'https://images.unsplash.com/photo-1552668693-2be72c866be4?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1234&q=80',
                     id: 5,
                     size: 'large',
                     linkURL: ''

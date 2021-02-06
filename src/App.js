@@ -10,7 +10,7 @@ import Header from './components/header/header.component.jsx';
 
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component.jsx';
 
-import { auth } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 
 /* const HatsPage = (props) => (
@@ -40,8 +40,24 @@ class App extends React.Component {
   unsubscribeFromAuth = null  // The first stage when the user is not signed in.
 
   componentDidMount(){
-    this.unsubscribeFromAuth =  auth.onAuthStateChanged(user => { this.setState({ currentUser: user }); console.log({user}) })
-    
+    this.unsubscribeFromAuth =  auth.onAuthStateChanged(async userAuth => {    // When the user sign in, then the 'userAuth' = an obejct of authorized person's data. / and when the user sign out, then the state change & userAuth became null.  
+       if(userAuth) {    // this means if userAuth exists means if the person is signed in.
+         const userRef = await createUserProfileDocument(userAuth); // passing the userAuth data inside createUserProfileDocument will help the new login user's data get saved into the database.
+
+         userRef.onSnapshot(snapShot => {
+              console.log(snapShot.data())    // snapShot.data() is the data that we stored in our database.
+
+              this.setState({
+                currentUser:{
+                  id: snapShot.id,
+                  ...snapShot.data()
+                }
+              })
+              console.log(this.state)
+         })
+      }
+      this.setState({ currentUser: userAuth})    // If the person signed out then the 'userAuth' became null and the "if" clause won't be executed. and the currentuser value will set to be null again.
+    })
   }
 
   componentWillUnmount(){     // To get the user status back to previous.
