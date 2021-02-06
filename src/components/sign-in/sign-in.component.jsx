@@ -4,7 +4,7 @@ import './sign-in.styles.scss';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from  '../custom-button/custom-button.component';
 
-import {signInWithGoogle} from '../../firebase/firebase.utils';
+import {signInWithGoogle, auth, createUserProfileDocument} from '../../firebase/firebase.utils';
 
 class SignIn extends React.Component{
     constructor(props){
@@ -17,11 +17,20 @@ class SignIn extends React.Component{
     }
 
     
-    handleSubmit = event => {    // This handleSubmit() method is created for preventing the default event on submit. and this will erase the input field after submitting the form. 
+    handleSubmit = async event => {    // This handleSubmit() method is created for preventing the default event on submit. and this will erase the input field after submitting the form. 
         event.preventDefault();
+
+        const { email, password } = this.state;
         
-        this.setState({ email: '', password: '' })   // This will empty the input field after submitting
-        console.log(this.state)
+        try{
+            await auth.signInWithEmailAndPassword(email, password);  // This signInWithEmailAndPassword is a built in function that comes with auth. library of firebase
+            this.setState({ email: '', password: '' })   // This will empty the input field after submitting
+
+        }catch(error){
+            console.error(error)
+        }
+            
+        console.log(this.state);
     }
     
     

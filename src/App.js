@@ -56,7 +56,7 @@ class App extends React.Component {
               console.log(this.state)
          })
       }
-      this.setState({ currentUser: userAuth})    // If the person signed out then the 'userAuth' became null and the "if" clause won't be executed. and the currentuser value will set to be null again.
+      this.setState({ currentUser: userAuth}, ()=> console.log(this.state))    // If the person signed out then the 'userAuth' became null and the "if" clause won't be executed. and the currentuser value will set to be null again.
     })
   }
 
