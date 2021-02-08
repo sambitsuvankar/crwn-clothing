@@ -11,6 +11,9 @@ import Header from './components/header/header.component.jsx';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component.jsx';
 
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import { connect } from 'react-redux';
+
+import { setCurrentUser } from './redux/user/user.action';
 
 
 /* const HatsPage = (props) => (
@@ -29,17 +32,21 @@ import { auth, createUserProfileDocument } from './firebase/firebase.utils';
  )  */
 
 class App extends React.Component {
-  constructor(){
-    super()
+  // constructor(){
+  //   super()
 
-    this.state = {
-      currentUser: null      // To save the authentication state change.
-    }
-  }
+  //   this.state = {
+  //     currentUser: null      // To save the authentication state change.
+  //   }
+  // }
 
+  
   unsubscribeFromAuth = null  // The first stage when the user is not signed in.
 
   componentDidMount(){
+    const { setCurrentUser } = this.props; 
+    console.log(this.props)
+
     this.unsubscribeFromAuth =  auth.onAuthStateChanged(async userAuth => {    // When the user sign in, then the 'userAuth' = an obejct of authorized person's data. / and when the user sign out, then the state change & userAuth became null.  
        if(userAuth) {    // this means if userAuth exists means if the person is signed in.
          const userRef = await createUserProfileDocument(userAuth); // passing the userAuth data inside createUserProfileDocument will help the new login user's data get saved into the database.
@@ -47,28 +54,27 @@ class App extends React.Component {
          userRef.onSnapshot(snapShot => {
               console.log(snapShot.data())    // snapShot.data() is the data that we stored in our database.
 
-              this.setState({
-                currentUser:{
+              setCurrentUser ({
                   id: snapShot.id,
                   ...snapShot.data()
-                }
-              })
+                })
+              
               console.log(this.state)
          })
       }
-      this.setState({ currentUser: userAuth}, ()=> console.log(this.state))    // If the person signed out then the 'userAuth' became null and the "if" clause won't be executed. and the currentuser value will set to be null again.
+      setCurrentUser( userAuth , ()=> console.log(setCurrentUser))    // If the person signed out then the 'userAuth' became null and the "if" clause won't be executed. and the currentuser value will set to be null again.
     })
   }
 
   componentWillUnmount(){     // To get the user status back to previous.
-    this.unsubscribeFromAuth();
+    this.unsubscribeFromAuth();  // Calling the Unsubscribe function() when the component is about to unmount is the best way to make sure  we dont get any memory leaks in our application related to listeners still being open even if the component that cares about the listeners is no longer on the page. 
   }
 
 
   render(){
     return (
       <div >
-        <Header currentUser={this.state.currentUser} />
+        <Header />
         <Switch>
             <Route exact path='/' component={HomePage} />   
             
@@ -82,7 +88,11 @@ class App extends React.Component {
 
 }
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser : user => dispatch(setCurrentUser(user))
+})
+
+export default connect(null, mapDispatchToProps)(App);
 
 
 
