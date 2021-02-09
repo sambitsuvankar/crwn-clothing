@@ -29,6 +29,7 @@ const Header = ({ currentUser })=> (
 
 
 const mapStateToProps = (state) => ({ currentUser : state.user.currentUser})     //This function naming can be anything but mapStateToProps is standard with redux codebases
+// Here the "state" argument is specifiically "rootReducer" ,which has a property called 'user' and 'user' has a property called 'currentUser' that comes from userReducer.
 export default connect(mapStateToProps)(Header);      // 'Connect' is a higher order function that takes input of two functions and modifies them into another function. by connecting them.
 
 
