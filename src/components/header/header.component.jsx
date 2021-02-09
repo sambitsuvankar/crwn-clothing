@@ -4,11 +4,14 @@ import { Link } from 'react-router-dom';
 
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 
+import CartIcon from '../cart-icon/cart-icon.component';
+import CartDropdown from '../cart-dropdown/cart-dropdown.component';
+
 import { auth } from '../../firebase/firebase.utils.js';
 
 import { connect } from 'react-redux';
 
-const Header = ({ currentUser })=> (
+const Header = ({ currentUser, hidden })=> (
     <div className='header'>
         <Link className='logo-container' to='/'>
             <Logo className='logo'/>
@@ -23,13 +26,20 @@ const Header = ({ currentUser })=> (
             {
                 currentUser ? <div className='option' onClick={()=> auth.signOut()}> Sign Out </div> : <Link className='option' to='/signin'> Sign In</Link>
             }
+            <CartIcon />
         </div>
+        {
+            hidden? null : <CartDropdown />
+            
+        }
     </div>
 )
 
 
-const mapStateToProps = (state) => ({ currentUser : state.user.currentUser})     //This function naming can be anything but mapStateToProps is standard with redux codebases
+// const mapStateToProps = (state) => ({ currentUser : state.user.currentUser})     //This function naming can be anything but mapStateToProps is standard with redux codebases
 // Here the "state" argument is specifiically "rootReducer" ,which has a property called 'user' and 'user' has a property called 'currentUser' that comes from userReducer.
+
+const mapStateToProps = ({ user: {currentUser}, cart: { hidden }}) => ({ currentUser , hidden})
 export default connect(mapStateToProps)(Header);      // 'Connect' is a higher order function that takes input of two functions and modifies them into another function. by connecting them.
 
 
