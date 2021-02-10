@@ -7,8 +7,8 @@ const CollectionPreview = ({ title, items }) => (       // Here the 'items' para
         <h1 className='title'>{title.toUpperCase()}</h1>
         <div className='preview'>
             {
-                items.filter((item, index) => index < 4).map(({ id, ...itemProps})=> (   // Here we destructured the 'items' values, which contains 4 key:value pair. i.e id, name, imageUrl, price 
-                    <CollectionItem key={id} {...itemProps} />                        // We passed that 4 values as the 'props' of the 'CollectionItem' 
+                items.filter((item, index) => index < 4).map((item)=> (   // Here we destructured the 'items' values, which contains 4 key:value pair. i.e id, name, imageUrl, price 
+                    <CollectionItem key={item.id} item={item} />                        // We passed that 4 values as the 'props' of the 'CollectionItem' 
                 ))
             }
         </div>
