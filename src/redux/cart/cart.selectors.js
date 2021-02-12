@@ -17,9 +17,20 @@ export const  selectCartItems = createSelector(
 
 )
 
+export const selectCartHidden = createSelector(
+    [selectCart],
+    (cart) => cart.hidden
+)
+
 export const  selectCartItemsCount = createSelector(
     [selectCartItems],
     cartItems => cartItems.reduce(( accumulatedQuantity, cartItem ) => accumulatedQuantity + cartItem.quantity , 0)  // Here we have used the reduce() method to get the summation of all the product quantities.
+)
+
+export const selectCartTotal = createSelector(
+    [selectCartItems],
+    cartItems => cartItems.reduce(( accumulatedQuantity, cartItem ) => accumulatedQuantity + ( cartItem.price * cartItem.quantity ), 0)
+
 )
 
 // Because we used the "createSelector" to build the output selector so it is now a momoize selector.

@@ -5,6 +5,7 @@ import  HomePage  from './pages/homepage/homepage.component.jsx';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 import ShopPage from './pages/shop/shop.component.jsx';
+import CheckoutPage from './pages/checkout/checkout.component.jsx';
 
 import Header from './components/header/header.component.jsx';
 
@@ -14,6 +15,8 @@ import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 import { connect } from 'react-redux';
 
 import { setCurrentUser } from './redux/user/user.action';
+
+import { selectCurrentUser } from './redux/user/user.selectors';
 
 
 /* const HatsPage = (props) => (
@@ -79,6 +82,8 @@ class App extends React.Component {
             <Route exact path='/' component={HomePage} />   
             
             <Route path='/shop' component={ShopPage} />
+
+            <Route exact path='/checkout' component={CheckoutPage} />
   
             <Route exact path='/signin' render= {() => this.props.currentUser ? (<Redirect to ='/' />) : (<SignInAndSignUpPage />)} />
         </Switch>
@@ -88,8 +93,8 @@ class App extends React.Component {
 
 }
 
-const mapStateToProps = ({ user }) => ({     //here we are attaching the 'currentUser' value as a Property to the "App" component through 'connect'   
-  currentUser: user.currentUser
+const mapStateToProps = (state) => ({     //here we are attaching the 'currentUser' value as a Property to the "App" component through 'connect'   
+  currentUser: selectCurrentUser(state)  // Here also we used the react selector function to make the data inside the component memoized
 })
 
 const mapDispatchToProps = dispatch => ({

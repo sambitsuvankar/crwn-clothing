@@ -11,6 +11,10 @@ import { auth } from '../../firebase/firebase.utils.js';
 
 import { connect } from 'react-redux';
 
+import { selectCurrentUser } from '../../redux/user/user.selectors';
+import { selectCartHidden } from '../../redux/cart/cart.selectors';
+import { createStructuredSelector } from 'reselect';
+
 const Header = ({ currentUser, hidden })=> (
     <div className='header'>
         <Link className='logo-container' to='/'>
@@ -39,7 +43,8 @@ const Header = ({ currentUser, hidden })=> (
 // const mapStateToProps = (state) => ({ currentUser : state.user.currentUser})     //This function naming can be anything but mapStateToProps is standard with redux codebases
 // Here the "state" argument is specifiically "rootReducer" ,which has a property called 'user' and 'user' has a property called 'currentUser' that comes from userReducer.
 
-const mapStateToProps = ({ user: {currentUser}, cart: { hidden }}) => ({ currentUser , hidden})
+const mapStateToProps = createStructuredSelector({ currentUser : selectCurrentUser , hidden: selectCartHidden})   // Here also we used react selector function to make the state property memoized inside the component
+
 export default connect(mapStateToProps)(Header);      // 'Connect' is a higher order function that takes input of two functions and modifies them into another function. by connecting them.
 
 
