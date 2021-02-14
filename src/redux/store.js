@@ -1,10 +1,15 @@
 import { createStore, applyMiddleware } from 'redux';
+
+import { persistStore } from 'redux-persist';    // redux-persist helps the data to store inside our local storage and get the data at the time of reloading the page
+
 import logger from 'redux-logger';
 
 import rootReducer from './root-reducer';
 
 const middlewares = [logger];
 
-const store = createStore(rootReducer, applyMiddleware(...middlewares));
+export const store = createStore(rootReducer, applyMiddleware(...middlewares));
 
-export default store;
+export const persistor = persistStore(store);
+
+// export default { store, persistor }; 

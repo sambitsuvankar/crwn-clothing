@@ -1,30 +1,30 @@
 import React from 'react';
-import SHOP_DATA from './shop.data.js';
-import CollectionPreview from '../../components/collection-preview-component/collection-preview.component';
+// import SHOP_DATA from './shop.data.js';
+
+import { Route } from 'react-router-dom';
+
+import CollectionsOverview from '../../components/collections-overview/collections-overview.component'
+
+import CollectionPage from '../collection/collection.component';
 
 
-class ShopPage extends React.Component{
-    constructor(props){
-        super(props)
+// class ShopPage extends React.Component{
+//     constructor(props){
+//         super(props)
 
-        this.state = {
-            collections : SHOP_DATA
-        }
-    }
+//         this.state = {
+//             collections : SHOP_DATA
+//         }
+//     }
 
 
-    render(){
-        const {collections} = this.state
-        return(
+    const ShopPage = ({ match }) => (    // Just because our "ShopPage" is nested inside our "App.js" through Route , So it will pass 3 Object like 'match', 'location, 'history' as Props 
             <div className='shop-page'>
-              {
-                  collections.map(({id, ...otherCollectionProps}) => (                  //"...otherCollectionProps"  = {title, routerName. items}
-                      <CollectionPreview key={id} {...otherCollectionProps} />        // Here we set the props value through spread operator. that means title='title', routerName="routerName", item='item'
-                  ))
-              }
-            </div>
-        )
-    }
-}
+              <Route exact path={`${match.path}`} component={CollectionsOverview} />
+              <Route path ={`${match.path}/:collectionId`} component={CollectionPage} />
+            </div>     
+    )
+ 
+    
 
 export default ShopPage
