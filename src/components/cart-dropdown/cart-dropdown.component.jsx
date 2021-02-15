@@ -13,7 +13,9 @@ import { selectCartItems } from '../../redux/cart/cart.selectors';
 
 import { withRouter } from 'react-router-dom';
 
-const CartDropdown = ({ cartItems, dispatch, history }) =>(
+const CartDropdown = ({ cartItems, dispatch, history }) =>{
+    console.log(history)
+    return(
     <div className='cart-dropdown' >
         <div className='cart-items'>
             {   
@@ -24,9 +26,9 @@ const CartDropdown = ({ cartItems, dispatch, history }) =>(
                 ) 
             }
         </div>
-        <CustomButton onClick={()=> {history.push('./checkout');  dispatch(toggleCartHidden()) }}>GO TO CHECKOUT</CustomButton>
+        <CustomButton onClick={()=> {history.replace('../checkout');  dispatch(toggleCartHidden()) }}>GO TO CHECKOUT</CustomButton>
     </div>
-)
+)}
 
 
 const mapStateToProps = ( state ) => ({ cartItems : selectCartItems(state) })        // Here we used the react selector function to make it memoize
