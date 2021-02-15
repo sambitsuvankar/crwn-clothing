@@ -6,10 +6,18 @@ import logger from 'redux-logger';
 
 import rootReducer from './root-reducer';
 
-const middlewares = [logger];
+const middlewares = [];
+
+if (process.env.NODE_ENV === 'development') {
+    middlewares.push(logger)
+}
+// NOTE :-> In nodeJs 'environment(env)' is a Property, when we type 'yarn start' , It runs in a development environment and when we type ' yarn build' it runs in our production environment.
+
 
 export const store = createStore(rootReducer, applyMiddleware(...middlewares));
 
 export const persistor = persistStore(store);
 
 // export default { store, persistor }; 
+
+
