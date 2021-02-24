@@ -39,9 +39,9 @@ export default firebase;
 export const createUserProfileDocument = async (userAuth, additionalData) => {   // Here the userAuth is the authenticated user obejct.
     if(!userAuth) return;
 
-   const userRef = firestore.doc(`users/${userAuth.uid}`)   // Here we creatred a snapshot document reference object.
+   const userRef = firestore.doc(`users/${userAuth.uid}`)   // Here we store the document reference object to the 'userRef' variable.
    
-   const snapShot = await userRef.get()
+   const snapShot = await userRef.get()                     // her we create the snapShot object from the document reference.
 
    console.log(snapShot)
 
@@ -60,7 +60,46 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {  
     }
 
     return userRef;
-} 
+};
+
+
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    const collectionRef = firestore.collection(collectionKey);
+    console.log(collectionRef);
+
+    const batch = firestore.batch();
+
+    objectsToAdd.forEach(obj => {
+        const newDocRef = collectionRef.doc(obj.title);
+        batch.set(newDocRef, obj)
+    });
+
+    return await batch.commit()                                           // batch.commit() returns a Promise , when promise succed it will comeback as a result of void value means a null value. 
+
+    // We did all of this so that we don't have to manually enter each collection and item into firebase. 
+}
+
+
+export const convertCollectionsSnapshotToMap = (collections) => {
+    const transformedCollection = collections.docs.map(doc => {
+        const { title, items } = doc.data();
+
+        return {
+            routeName: encodeURI (title.toLowerCase()),
+            id: doc.id,
+            title,
+            items
+        }
+    });
+
+    console.log(transformedCollection);
+
+    return transformedCollection.reduce((accumulator, collection) => {
+        accumulator[ collection.title.toLowerCase() ] = collection;
+        return accumulator;
+    }, {} )
+    
+}
 
 
 

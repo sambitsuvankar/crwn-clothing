@@ -5,13 +5,13 @@ const selectShop = state => state.shop;
 
 export const selectShopSection = createSelector (
     [selectShop],
-    shop => shop.collection
+    shop => shop.collections
 )
 
 
 export const selectCollectionForPreview = createSelector(
     [selectShopSection],
-    collection => Object.keys(collection).map(key => collection[key])   // Object.keys() will return an Array of keys, then we map over the keys Array.
+    collections => collections ? Object.keys(collections).map(key => collections[key]) : []   // Object.keys() will return an Array of keys, then we map over the keys Array.
 
 )
 
@@ -25,7 +25,7 @@ export const selectCollectionForPreview = createSelector(
 
 export const selectCollection = memoize((collectionUrlParam) => createSelector(
     [selectShopSection],
-    collections => collections[collectionUrlParam]                              // This is for Object data type
+    collections => collections ?  collections[collectionUrlParam] : null                             // This is for Object data type
     // collection => collection.find(
     //     cllctn => cllctn.id === COLLECTION_ID_MAP[collectionUrlParam]        // This for Array data type
     // )

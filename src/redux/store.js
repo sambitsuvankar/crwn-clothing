@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from 'redux';
 
 import { persistStore } from 'redux-persist';    // redux-persist helps the data to store inside our local storage and get the data at the time of reloading the page
 
-import logger from 'redux-logger';
+import logger from 'redux-logger';     // logger helps in log the action to the console.
 
 import rootReducer from './root-reducer';
 

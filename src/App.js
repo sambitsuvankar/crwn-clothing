@@ -11,12 +11,14 @@ import Header from './components/header/header.component.jsx';
 
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component.jsx';
 
-import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument, /*addCollectionAndDocuments*/ } from './firebase/firebase.utils';
 import { connect } from 'react-redux';
 
 import { setCurrentUser } from './redux/user/user.action';
 
 import { selectCurrentUser } from './redux/user/user.selectors';
+
+// import { selectCollectionForPreview } from './redux/shop/shop.selector'
 
 
 /* const HatsPage = (props) => (
@@ -46,15 +48,15 @@ class App extends React.Component {
   
   unsubscribeFromAuth = null  // The first stage when the user is not signed in.
 
-  componentDidMount(){
-    const { setCurrentUser } = this.props; 
+  componentDidMount(){        // componentDidMount() runs every time we refresh the page as it is a lifecycle method.
+    const { setCurrentUser,  } = this.props; 
     console.log(this.props)
 
     this.unsubscribeFromAuth =  auth.onAuthStateChanged(async userAuth => {    // When the user sign in, then the 'userAuth' = an obejct of authorized person's data. / and when the user sign out, then the state change & userAuth became null.  
        if(userAuth) {    // this means if userAuth exists means if the person is signed in.
          const userRef = await createUserProfileDocument(userAuth); // passing the userAuth data inside createUserProfileDocument will help the new login user's data get saved into the database.
 
-         userRef.onSnapshot(snapShot => {
+         userRef.onSnapshot(snapShot => {     // onSnapshot() method gets fired everytime the 'snapShot' object gets updated.
               console.log(snapShot.data())    // snapShot.data() is the data that we stored in our database.
 
               setCurrentUser ({   // instead of this.setState we are passing an action object to our user action function.
@@ -66,7 +68,10 @@ class App extends React.Component {
          })
       }
       setCurrentUser( userAuth , ()=> console.log(setCurrentUser))    // If the person signed out then the 'userAuth' became null and the "if" clause won't be executed. and the currentuser value will set to be null again.
-    })
+
+
+      // addCollectionAndDocuments('collections', collectionsArray.map(({ title, items }) => ({ title, items }) ))       // This will set the shop data into the firebase 
+    }, error => console.log(error));  
   }
 
   componentWillUnmount(){     // To get the user status back to previous.
@@ -94,7 +99,8 @@ class App extends React.Component {
 }
 
 const mapStateToProps = (state) => ({     //here we are attaching the 'currentUser' value as a Property to the "App" component through 'connect'   
-  currentUser: selectCurrentUser(state)  // Here also we used the react selector function to make the data inside the component memoized
+  currentUser: selectCurrentUser(state),  // Here also we used the react selector function to make the data inside the component memoized
+  // collectionsArray :  selectCollectionForPreview(state)   // Here we pushed the shop data array as 'collectionArray' as a props inside our componentDidMount.
 })
 
 const mapDispatchToProps = dispatch => ({
