@@ -11,10 +11,10 @@ import Header from './components/header/header.component.jsx';
 
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component.jsx';
 
-import { auth, createUserProfileDocument, /*addCollectionAndDocuments*/ } from './firebase/firebase.utils';
+// import { auth, createUserProfileDocument, /*addCollectionAndDocuments*/ } from './firebase/firebase.utils';
 import { connect } from 'react-redux';
 
-import { setCurrentUser } from './redux/user/user.action';
+import { setCurrentUser, checkUserSession } from './redux/user/user.action';
 
 import { selectCurrentUser } from './redux/user/user.selectors';
 
@@ -50,7 +50,7 @@ class App extends React.Component {
 
   componentDidMount(){        // componentDidMount() runs every time we refresh the page as it is a lifecycle method.
     const { setCurrentUser,  } = this.props; 
-    console.log(this.props)
+/*    console.log(this.props)
 
     this.unsubscribeFromAuth =  auth.onAuthStateChanged(async userAuth => {    // When the user sign in, then the 'userAuth' = an obejct of authorized person's data. / and when the user sign out, then the state change & userAuth became null.  
        if(userAuth) {    // this means if userAuth exists means if the person is signed in.
@@ -64,14 +64,18 @@ class App extends React.Component {
                   ...snapShot.data()
                 })
               
-              console.log(this.props.setCurrentUser)
+              console.log(this.props.currentUser.displayName)
          })
       }
       setCurrentUser( userAuth , ()=> console.log(setCurrentUser))    // If the person signed out then the 'userAuth' became null and the "if" clause won't be executed. and the currentuser value will set to be null again.
 
 
       // addCollectionAndDocuments('collections', collectionsArray.map(({ title, items }) => ({ title, items }) ))       // This will set the shop data into the firebase 
-    }, error => console.log(error));  
+    }, error => console.log(error));  */
+
+    //--------------------------------------------------
+    const { checkUserSession } = this.props;
+    checkUserSession()
   }
 
   componentWillUnmount(){     // To get the user status back to previous.
@@ -104,7 +108,8 @@ const mapStateToProps = (state) => ({     //here we are attaching the 'currentUs
 })
 
 const mapDispatchToProps = dispatch => ({
-  setCurrentUser : user => dispatch(setCurrentUser(user))  // 'dispatch' is a way for redux to know that whatever object we are passing in that is gonna be an action object that redux gonna pass to every reducer. 
+  setCurrentUser : user => dispatch(setCurrentUser(user)),  // 'dispatch' is a way for redux to know that whatever object we are passing in that is gonna be an action object that redux gonna pass to every reducer. 
+  checkUserSession : () => dispatch(checkUserSession())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);  // Here we have connected the 'mapDispatchToProps' to the 'App' so that "setCurrentUser" can be sent as a props inside the App 

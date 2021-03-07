@@ -9,7 +9,7 @@ import { ReactComponent as Logo } from '../../assets/crown.svg';
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 
-import { auth } from '../../firebase/firebase.utils.js';
+// import { auth } from '../../firebase/firebase.utils.js';
 
 import { connect } from 'react-redux';
 
@@ -17,7 +17,9 @@ import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { selectCartHidden } from '../../redux/cart/cart.selectors';
 import { createStructuredSelector } from 'reselect';
 
-const Header = ({ currentUser, hidden })=> (
+import { signOutStart } from '../../redux/user/user.action'
+
+const Header = ({ currentUser, hidden, signOutStart })=> (
     <HeaderContainer >
         <LogoContainer  to='/'>
             <Logo className='logo'/>
@@ -30,7 +32,8 @@ const Header = ({ currentUser, hidden })=> (
                 CONTACT
             </OptionLink>
             {
-                currentUser ? <OptionDiv  onClick={()=> auth.signOut()}> SIGN OUT </OptionDiv> : <OptionLink  to='/signin'> SIGN IN</OptionLink>
+                // currentUser ? <OptionDiv  onClick={()=> auth.signOut()}> SIGN OUT </OptionDiv> : <OptionLink  to='/signin'> SIGN IN</OptionLink>
+                currentUser ? <OptionDiv  onClick={signOutStart}> SIGN OUT </OptionDiv> : <OptionLink  to='/signin'> SIGN IN</OptionLink>
             }
             <CartIcon />
         </OptionsContainer>
@@ -47,7 +50,11 @@ const Header = ({ currentUser, hidden })=> (
 
 const mapStateToProps = createStructuredSelector({ currentUser : selectCurrentUser , hidden: selectCartHidden})   // Here also we used react selector function to make the state property memoized inside the component
 
-export default connect(mapStateToProps)(Header);      // 'Connect' is a higher order function that takes input of two functions and modifies them into another function. by connecting them.
+const mapDispatchToProps = dispatch => ({
+    signOutStart : ()=> dispatch(signOutStart())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);      // 'Connect' is a higher order function that takes input of two functions and modifies them into another function. by connecting them.
 
 
 // NOTE :

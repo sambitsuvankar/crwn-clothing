@@ -6,7 +6,10 @@ import CustomButton from '../custom-button/custom-button.component';
 
 import './sign-up.styles.scss'
 
-import { auth, createUserProfileDocument } from '../../firebase/firebase.utils.js';
+// import { auth, createUserProfileDocument } from '../../firebase/firebase.utils.js';
+import { connect } from 'react-redux';
+
+import { signUpStart } from '../../redux/user/user.action'
 
 
 class SignUp extends React.Component{
@@ -31,8 +34,8 @@ class SignUp extends React.Component{
             return;
         };
 
-        try{
-            const { user } = await auth.createUserWithEmailAndPassword(email, password);
+/*        try{
+            const { user } = await auth.createUserWithEmailAndPassword(email, password);  // 'createUserWithEmailAndPassword' method comes inbuilt with the Auth library of firebase
 
             await createUserProfileDocument(user, { displayName });
 
@@ -45,7 +48,10 @@ class SignUp extends React.Component{
 
         }catch(error){
             console.error(error)
-        }
+        }    */
+
+        const { signUpStart } = this.props;
+        signUpStart( email, password, displayName )
     }
 
     handleChange = event => {
@@ -76,4 +82,8 @@ class SignUp extends React.Component{
     }
 }
 
-export default SignUp
+const mapDispatchToProps = dispatch => ({
+    signUpStart : (email,password,displayName) => dispatch(signUpStart({email,password,displayName}))
+})
+
+export default connect(null,mapDispatchToProps)( SignUp )
