@@ -1,4 +1,6 @@
-import React from 'react';
+// In this version we are going to use the functional component with React hooks in the place of Class component.
+
+import React, { useState } from 'react';
 import './sign-in.styles.scss';
 
 import { connect } from 'react-redux';
@@ -10,68 +12,49 @@ import CustomButton from  '../custom-button/custom-button.component';
 
 import { googleSignInStart, emailSignInStart } from '../../redux/user/user.action.js';
 
-class SignIn extends React.Component{
-    constructor(props){
-        super(props)
 
-        this.state = {
-            email: '',
-            password: ''
-        }
-    }
 
+const SignIn = ({ emailSignInStart, googleSignInStart }) => {   // No more setState. Redux will handle the state from here on out with saga...........
+    // As we were extracting the 'emailSignInStart' Action from this.props in class component, But here in functional component we have to pass the props {emailSignInStart} inside the argument.
+
+    const [ userCredential, setCredential ] = useState({ email: '', password: ''})
+
+    const { email, password } = userCredential;
     
-    handleSubmit = async event => {    // This handleSubmit() method is created for preventing the default event on submit. and this will erase the input field after submitting the form. 
+    const handleSubmit = async event => {    // This handleSubmit() method is created for preventing the default event on submit. and this will erase the input field after submitting the form. 
         event.preventDefault();
 
-        const { email, password } = this.state;
-          
-/*        try{
-            await auth.signInWithEmailAndPassword(email, password);  // This signInWithEmailAndPassword is a built in function that comes with auth. library of firebase
-            this.setState({ email: '', password: '' })   // This will empty the input field after submitting
+        emailSignInStart( email, password );
 
-        }catch(error){
-            console.error(error)
-        }                     */
-        
-
-        // No more setState. Redux will handle the state from here on out with saga...........
-        const { emailSignInStart } = this.props;
-
-        emailSignInStart( email, password )
-            
-        console.log(this.state);
-        console.log(this.props);
     }
     
     
-    handleChange = event => {        // This handleChange() method is created because when there is a change happens in the input field it will track the data input and set to the ths.state.
+    const handleChange = event => {        // This handleChange() method is created because when there is a change happens in the input field it will track the data input and set to the ths.state.
         const { value, name } = event.target;
         
-        this.setState ({ [name]: value }) 
+        setCredential ({ userCredential, [name]: value }) 
     }
 
-    render(){
-        const { googleSignInStart } = this.props
-        return(
+    
+    return(
 
-            <div className='sign-in'>
-                <h2>I already have an account</h2>
-                <span>Sign in with your Email and password</span>
+        <div className='sign-in'>
+            <h2>I already have an account</h2>
+            <span>Sign in with your Email and password</span>
 
-                <form onSubmit={this.handleSubmit}>
-                    <FormInput name='email' type='email' value={this.state.email} label='email' handleChange={this.handleChange} required />
-                    
-                    <FormInput name='password' type='password' value={this.state.password} label='password' handleChange={this.handleChange} required />
-                   
-                    <div className='button'>
-                        <CustomButton type='submit' value='Submit Form'> Sign In </CustomButton>
-                        <CustomButton type ='button' onClick={googleSignInStart} isGoogleSignIn > Sign In with Google </CustomButton>
-                    </div>
-                </form>
-            </div>
-        )
-    }
+            <form onSubmit={handleSubmit}>
+                <FormInput name='email' type='email' value={email} label='email' handleChange={handleChange} required />
+                
+                <FormInput name='password' type='password' value={password} label='password' handleChange={handleChange} required />
+                
+                <div className='button'>
+                    <CustomButton type='submit' value='Submit Form'> Sign In </CustomButton>
+                    <CustomButton type ='button' onClick={googleSignInStart} isGoogleSignIn > Sign In with Google </CustomButton>
+                </div>
+            </form>
+        </div>
+    )
+    
 }
 
 const mapDispatchToProps = dispatch => ({
