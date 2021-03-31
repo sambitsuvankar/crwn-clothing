@@ -21,7 +21,7 @@ const ShopPage = ({ fetchCollectionsStartAsync, match }) => {     // Just becaus
 
   return(
           <div className='shop-page'>
-            <Route exact path={`${match.path}`} render={() => <CollectionsOverviewContainer/>} /> 
+            <Route exact path={`${match.path}`} component={CollectionsOverviewContainer} /> 
             <Route path ={`${match.path}/:collectionId`} component={ CollectionsPageContainer } />
           </div>
   )

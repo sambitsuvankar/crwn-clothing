@@ -9,15 +9,15 @@ import  CollectionPreview  from '../collection-preview/collection-preview.compon
 import {  selectCollectionForPreview } from '../../redux/shop/shop.selector';
 
 
-const CollectionsOverview = ({ collections, keys }) => (
+const CollectionsOverview = ({ collections }) => (
     <div className='collection-overview'>
         {
             collections.map(({id, ...otherCollectionProps}) => (                  //"...otherCollectionProps"  = {title, routerName. items}
-            <CollectionPreview key={id} {...otherCollectionProps} />        // Here we set the props value through spread operator. that means title='title', routerName="routerName", item='item'
+            <CollectionPreview  key={id} {...otherCollectionProps} />        // Here we set the props value through spread operator. that means title='title', routerName="routerName", item='item'
              ))
             
         }   
-    </div>
+    </div> 
 )
 
 const mapStateToProps = createStructuredSelector({

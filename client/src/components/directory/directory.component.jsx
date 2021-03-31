@@ -65,3 +65,4 @@ const Directory = ({ sections }) => (
 
     export default connect(mapStateToProps)(Directory);
 
+ 

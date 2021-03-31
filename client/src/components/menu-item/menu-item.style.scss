@@ -25,7 +25,11 @@
     }
 
     &.large{
-        height: 380px;
+        height: 480px;
+
+        @media screen and (max-width: 800px) {
+            flex: 100%;
+        }
     }
 
 

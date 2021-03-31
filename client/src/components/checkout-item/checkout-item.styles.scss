@@ -32,6 +32,9 @@
         .value{
             margin: 0 10px;
         }
+        @media screen and (max-width: 800px){
+            padding-left: 0;
+        }
     }
     .remove-button {
         padding-left: 12px;

@@ -15,7 +15,7 @@ const MenuItem = ({ title, imageURL ,size, history, match, linkURL}) => (
 
 export default withRouter(MenuItem);
 
-
+ 
 // NOTES
 // What "withRouter" is?  It is a higher order component . A higher order component is essentially a function that takes a component as an argument and turns that to a modified component.
 // Just like our "MenuItems" that takes props as an argument and render it to a DOM Elements, A higher order component takes any component and modifies it in someway and returns the new modified component 
