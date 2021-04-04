@@ -1,16 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 // import SHOP_DATA from './shop.data.js';
 
 import { Route } from 'react-router-dom';
+import Spinner from '../../components/spinner/spinner.component'
+// import CollectionsOverviewContainer from '../../components/collections-overview/collections-overview.container'
 
-import CollectionsOverviewContainer from '../../components/collections-overview/collections-overview.container'
-
-import CollectionsPageContainer from '../collection/collection.container.jsx';
+// import CollectionsPageContainer from '../collection/collection.container.jsx';
 
 // import { firestore, convertCollectionsSnapshotToMap } from '../../firebase/firebase.utils.js';
 
 import { connect } from 'react-redux';
 import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
+const CollectionsOverviewContainer = lazy(() => import('../../components/collections-overview/collections-overview.container'));
+const CollectionsPageContainer = lazy(() => import('../collection/collection.container.jsx'));
+
 
 
 const ShopPage = ({ fetchCollectionsStartAsync, match }) => {     // Just because our "ShopPage" is nested inside our "App.js" through Route , So it will pass 3 Object like 'match', 'location, 'history' as Props 
@@ -21,8 +24,10 @@ const ShopPage = ({ fetchCollectionsStartAsync, match }) => {     // Just becaus
 
   return(
           <div className='shop-page'>
-            <Route exact path={`${match.path}`} component={CollectionsOverviewContainer} /> 
-            <Route path ={`${match.path}/:collectionId`} component={ CollectionsPageContainer } />
+            <Suspense fallback={<Spinner/>}>
+              <Route exact path={`${match.path}`} component={CollectionsOverviewContainer} /> 
+              <Route path ={`${match.path}/:collectionId`} component={ CollectionsPageContainer } />
+            </Suspense>
           </div>
   )
 }   // NOTE : 'render' takes a function in which parameter it passes the props of 'Route' like location,history, match and returns a component

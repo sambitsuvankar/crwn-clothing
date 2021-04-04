@@ -1,17 +1,17 @@
 
 /////// Here We have written the App.js with the functional Component by the Use of React Hooks {useEffect}
 
-import React, {useEffect} from 'react';
-import  HomePage  from './pages/homepage/homepage.component.jsx';
+import React, {lazy, useEffect, Suspense} from 'react';
+// import  HomePage  from './pages/homepage/homepage.component.jsx';
 
 import { Route, Switch, Redirect } from 'react-router-dom';
 
-import ShopPage from './pages/shop/shop.component.jsx';
-import CheckoutPage from './pages/checkout/checkout.component.jsx';
+// import ShopPage from './pages/shop/shop.component.jsx';
+// import CheckoutPage from './pages/checkout/checkout.component.jsx';
 
 import Header from './components/header/header.component.jsx';
 
-import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component.jsx';
+// import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component.jsx';
 
 // import { auth, createUserProfileDocument, /*addCollectionAndDocuments*/ } from './firebase/firebase.utils';
 import { connect } from 'react-redux';
@@ -22,7 +22,20 @@ import { selectCurrentUser } from './redux/user/user.selectors';
 
 // import { selectCollectionForPreview } from './redux/shop/shop.selector'
 
-import { GlobalStyle } from './global.styles'
+import { GlobalStyle } from './global.styles';
+import Spinner from './components/spinner/spinner.component';
+import ErrorBoundary from './components/error-boundary/error-boundary.component'
+
+const HomePage = lazy(() => import('./pages/homepage/homepage.component.jsx'));   // This will lazy load our Home page component. Means when the apllication mounts for the first time it will get this chunk that represents everything except for the Homepage .
+// Now the problem with this 'lazy' is because this is asynchronous this HomePage has an opertunity where it might not exist and it depends on how fast our server is .And when we request our HomePage from our backend servers it might take some time and the user will see nothing . So to solve this problem we have "react suspense" 
+// "Suspense" is a new component that React has released that allows us to wrap any part of our application that might be rendering asynchronous component 
+
+const ShopPage = lazy(()=> import('./pages/shop/shop.component.jsx'));
+const SignInAndSignUpPage = lazy(()=> import('./pages/sign-in-and-sign-up/sign-in-and-sign-up.component.jsx'));
+const CheckoutPage = lazy(()=> import('./pages/checkout/checkout.component.jsx'));
+
+
+
 
 
 const App = ({ checkUserSession, currentUser }) => {
@@ -37,14 +50,18 @@ const App = ({ checkUserSession, currentUser }) => {
       <GlobalStyle/>
       <Header />
       <Switch>
-          <Route exact path='/' component={HomePage} />   
-          
-          <Route path='/shop' component={ShopPage} />
-
-          <Route exact path='/checkout' component={CheckoutPage} />
-
-          <Route exact path='/signin' render= {() => currentUser ? (<Redirect to ='/' />) : (<SignInAndSignUpPage />)} />
-      </Switch>
+          <ErrorBoundary>
+            <Suspense fallback={<Spinner/>}>
+              <Route exact path='/' component={HomePage} />   
+              
+              <Route path='/shop' component={ShopPage} />
+              
+              <Route exact path='/checkout' component={CheckoutPage} />
+              
+              <Route exact path='/signin' render= {() => currentUser ? (<Redirect to ='/' />) : (<SignInAndSignUpPage />)} />
+            </Suspense>
+          </ErrorBoundary>
+          </Switch>
     </div>
   );
   
