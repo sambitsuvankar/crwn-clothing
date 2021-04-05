@@ -87,3 +87,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(App);  // Here we ha
 // The default value of exact is always true. 
 
 // <Switch> </Switch>  this performs a functionality in which as long as it matches the path '/' it switch the browser page to that page immidiately. 
+
+// Compression :- Yarn add compression --> The 'Compression' library is a library that allows us to compress and Gzip all of the files and chunks that we end up sending out from our server.

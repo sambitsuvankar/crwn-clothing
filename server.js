@@ -5,6 +5,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser')
+const compression = require('compression');  //The 'Compression' library is a library that allows us to compress and Gzip all of the files and chunks that we end up sending out from our server.
 const path = require('path');      // Its a native module, and what path does is , it lets us build pathing for our directory, And the reason for that in our final production build most build gets optimised and you dont actually know a lot of the times what the directory name you might be in. Path just allows it in the moment to calculate it for us .  
 // In other words it allows us to dynamically build when we call it from our current directory to actually where we want to go.
 
@@ -16,7 +17,7 @@ const app = express();   // Remember 'express' is just a library that allows us 
 const port = process.env.PORT || 5000       // Then we are gonna say that we want a 'port' that we will host our app on to be either the process.env.PORT or port 5000.   So our server is gonna be on a different port than our localhost.   So our localhost will be on 3000 and our server host will be on 5000.
 
 // NOw inorder for our frontend can actually be able to access our web server we have to tell it that we want it to use that port whenever we make a API request . So for this we have added a property in the "package.json" file of our client which is ["proxy" : "http://localhost:5000",].
-
+app.use(compression());
 app.use(bodyParser.json());      // this says we are gonna make sure that any of the request coming in I want to process their body tag and convert it to JSON so we can use it.
 
 app.use(bodyParser.urlencoded({ extended: true }))   // 'urlencoded' is a way for us to make sure that the url strings are getting in and passing out, which do not contain things like spaces, symbols, or if they do they get properly escaped .
