@@ -32,7 +32,7 @@ const SignIn = ({ emailSignInStart, googleSignInStart }) => {   // No more setSt
     const handleChange = event => {        // This handleChange() method is created because when there is a change happens in the input field it will track the data input and set to the ths.state.
         const { value, name } = event.target;
         
-        setCredential ({ userCredential, [name]: value }) 
+        setCredential ({ ...userCredential, [name]: value }) 
     }
 
     
