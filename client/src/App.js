@@ -24,7 +24,7 @@ import { selectCurrentUser } from './redux/user/user.selectors';
 
 import { GlobalStyle } from './global.styles';
 import Spinner from './components/spinner/spinner.component';
-import ErrorBoundary from './components/error-boundary/error-boundary.component'
+// import ErrorBoundary from './components/error-boundary/error-boundary.component'
 
 const HomePage = lazy(() => import('./pages/homepage/homepage.component.jsx'));   // This will lazy load our Home page component. Means when the apllication mounts for the first time it will get this chunk that represents everything except for the Homepage .
 // Now the problem with this 'lazy' is because this is asynchronous this HomePage has an opertunity where it might not exist and it depends on how fast our server is .And when we request our HomePage from our backend servers it might take some time and the user will see nothing . So to solve this problem we have "react suspense" 
@@ -50,7 +50,6 @@ const App = ({ checkUserSession, currentUser }) => {
       <GlobalStyle/>
       <Header />
       <Switch>
-          <ErrorBoundary>
             <Suspense fallback={<Spinner/>}>
               <Route exact path='/' component={HomePage} />   
               
@@ -60,7 +59,6 @@ const App = ({ checkUserSession, currentUser }) => {
               
               <Route exact path='/signin' render= {() => currentUser ? (<Redirect to ='/' />) : (<SignInAndSignUpPage />)} />
             </Suspense>
-          </ErrorBoundary>
           </Switch>
     </div>
   );
